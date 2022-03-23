@@ -6,7 +6,7 @@
 //!
 //!
 //! ```text
-//! === Caso 0.1 ===
+//! === Caso 0.2 ===
 //! Type `help` for more information.
 //! > (A <-> B)[(A <-> C) -> (B <-> D)] <=> (C -> D)
 //! (A <-> B)[(A <-> C) -> (B <-> D)] <=> (C <-> D)
