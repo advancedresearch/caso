@@ -152,14 +152,12 @@ impl Expr {
     }
 }
 
-impl<'a> From<&'a str> for Expr {
-    fn from(val: &'a str) -> Expr {
+impl<'a> TryFrom<&'a str> for Expr {
+    type Error = String;
+    fn try_from(val: &'a str) -> Result<Expr, String> {
         match parsing::parse_str(val) {
-            Ok(x) => x,
-            Err(err) => {
-                eprintln!("ERROR:\n{}", err);
-                panic!()
-            }
+            Ok(x) => Ok(x),
+            Err(err) => Err(format!("ERROR:\n{}", err)),
         }
     }
 }
@@ -241,11 +239,11 @@ pub fn path<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {
     Path(Arc::new((a.into(), b.into())))
 }
 
-pub fn solve_str(a: &str) -> Option<String> {
-    let mut a: Expr = a.into();
-    let sq = code::Square::new(&a)?;
+pub fn solve_str(a: &str) -> Result<String, String> {
+    let mut a: Expr = a.try_into()?;
+    let sq = code::Square::new(&a).ok_or("Could not convert into square".to_string())?;
     sq.update(&mut a);
-    Some(format!("{}", a))
+    Ok(format!("{}", a))
 }
 
 #[cfg(test)]
