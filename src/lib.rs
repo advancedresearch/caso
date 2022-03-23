@@ -504,5 +504,23 @@ mod tests {
         // `(D -> B) => (B <-> D)`
         let ref a = solve_str("(A <-> B)[(A <-> C) -> (D -> B)] <=> (C <-> D)").unwrap();
         assert_eq!(a, "(A <-> B)[(A <-> C) -> (B <-> D)] <=> (C <-> D)");
+
+        let ref a = solve_str("(a -> b)[(c -> a) -> (b -> d)] <=> (c -> d)").unwrap();
+        assert_eq!(a, "(a -> b)[(a <- c) -> (b -> d)] <=> (c -> d)");
+
+        let ref a = solve_str("(a -> b)[(a -> c) -> (d -> b)] <=> (c -> d)").unwrap();
+        assert_eq!(a, "(a -> b)[(a -> c) -> (b <- d)] <=> (c -> d)");
+
+        let ref a = solve_str("(a -> b)[(a <- c) -> (b -> d)] <=> (c -> d)").unwrap();
+        assert_eq!(a, "(a -> b)[(a <- c) -> (b -> d)] <=> (c -> d)");
+
+        let ref a = solve_str("(a -> b)[(a <- c) -> (b <- d)] <=> (c -> d)").unwrap();
+        assert_eq!(a, "(a -> b)[(a <- c) -> (b <- d)] <=> (c -> d)");
+
+        let ref a = solve_str("(a -> b)[(a <- c) -> (b <- d)] <=> (d -> c)").unwrap();
+        assert_eq!(a, "(a -> b)[(a <- c) -> (b <- d)] <=> (c <- d)");
+
+        let ref a = solve_str("(a -> b)[(a <- c) -> (b <- d)] <=> (c <- d)").unwrap();
+        assert_eq!(a, "(a -> b)[(a <- c) -> (b <- d)] <=> (c <- d)");
     }
 }
