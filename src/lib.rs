@@ -570,5 +570,11 @@ mod tests {
 
         let ref a = solve_str("(a -> b)[(a <- c) -> (b <- d)] <=> (c <- d)").unwrap();
         assert_eq!(a, "(a -> b)[(a <- c) -> (b <- d)] <=> (c <- d)");
+
+        let ref a = solve_str("(A <->> B)[(A <<-> C) -> (B <->> D)] <=> (C <<-> D)").unwrap();
+        assert_eq!(a, "(A <-> B)[(A <-> C) -> (B <-> D)] <=> (C <-> D)");
+
+        let ref a = solve_str("(A <-!> B)[(A <!-> C) -> (B <-!> D)] <=> (C <!-> D)").unwrap();
+        assert_eq!(a, "(A <-> B)[(A <-> C) -> (B <-> D)] <=> (C <-> D)");
     }
 }

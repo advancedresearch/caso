@@ -28,6 +28,10 @@
 (Y, F'(Z)) :- (X, epi'(Y)), (Y, mor'(Z)), (Y, F'(Z)).
 (X, epi'(Y)) :- (X, mono'(Y)), (Y, mono'(X)).
 
+// Left and right inverse.
+(X, left_inv'(Y)) :- (Y, right_inv'(X)).
+(X, right_inv'(Y)) :- (Y, left_inv'(X)).
+
 // Zero.
 (X, zero'(Y)) :- (Y, zero'(X)).
 (X, zero'(Z)) :- (X, F'(Y)), (Y, zero'(Z)).
