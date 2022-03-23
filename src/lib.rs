@@ -10,6 +10,14 @@
 //! (A <-> B)[(A <-> C) -> (B <-> D)] <=> (C <-> D)
 //! ```
 //!
+//! To run Case from your Terminal, type:
+//!
+//! `cargo install --example caso caso`
+//!
+//! Then, to run:
+//!
+//! `caso`
+//!
 //! | Morphism | Notation |
 //! | --- | --- |
 //! | Directional | `->` |
