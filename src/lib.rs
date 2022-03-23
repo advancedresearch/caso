@@ -434,7 +434,7 @@ mod tests {
         let sq = Square::new(&b).unwrap();
         assert_eq!(sq, Square {
             bind: vec![conv("a"), conv("b"), conv("c"), conv("d")],
-            labels: [[0, 1, 2], [0, 3, 1], [0, 2, 4], [0, 3, 4]],
+            labels: [[0, 1, 2], [0, 1, 3], [0, 2, 4], [0, 3, 4]],
             code: [Dir, RevDir, Dir, Iso],
         });
         assert_eq!(code::eval(sq.code), [Iso; 4]);
@@ -465,6 +465,11 @@ mod tests {
         assert_eq!(sq.eval(), [Zero, Zero, RevZero, RevZero]);
 
         let a: Expr = conv("(A ->> B)[(C ->> A) -> (B ->> D)] <=> (D ->> C)");
+        let sq = code::Square::new(&a).unwrap();
+        assert_eq!(sq.code, [Epi, RevEpi, Epi, RevEpi]);
+        assert_eq!(sq.eval(), [EpiMono, RevEpiMono, EpiMono, RevEpiMono]);
+
+        let a: Expr = conv("(A ->> B)[(A <<- C) -> (B ->> D)] <=> (D ->> C)");
         let sq = code::Square::new(&a).unwrap();
         assert_eq!(sq.code, [Epi, RevEpi, Epi, RevEpi]);
         assert_eq!(sq.eval(), [EpiMono, RevEpiMono, EpiMono, RevEpiMono]);

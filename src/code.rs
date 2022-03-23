@@ -84,6 +84,9 @@ pub struct Square {
     /// Bound expressions.
     pub bind: Vec<Expr>,
     /// Labels of edges.
+    ///
+    /// Stores an object `[<obj>, 0, 0]`
+    /// or an edge `[0, <from>, <to>]`.
     pub labels: [[u8; 3]; 4],
     /// Morphism codes of the edges.
     pub code: [Morphism; 4],
@@ -109,7 +112,7 @@ impl Square {
                 _ => [find(bind, a), 0, 0],
             }
         }
-        fn code(a: &Expr, edge: usize, labels: [[u8; 3]; 4]) -> Morphism {
+        fn code(a: &Expr, edge: usize, labels: &mut [[u8; 3]; 4]) -> Morphism {
             let f = (
                 edge == 1 &&
                 labels[0][1] != 0 &&
@@ -133,7 +136,12 @@ impl Square {
                     Unknown => Unknown,
                     Dir | Mono | Epi if b.0 == b.1 => Iso,
                     x if edge == 0 => *x,
-                    x => if f {reverse(*x)} else {*x},
+                    x => if f {
+                        // Swap end-points to match morphism.
+                        let [a, b, c] = labels[edge];
+                        labels[edge] = [a, c, b];
+                        reverse(*x)
+                    } else {*x},
                 }
             } else {Unknown}
         }
@@ -146,17 +154,17 @@ impl Square {
             if let Path(ltb) = &a.0 {
                 match &ltb.1 {
                     Mor(_, _, tb) => {
-                        let labels = [
+                        let mut labels = [
                             new(&mut bind, &ltb.0),
                             new(&mut bind, &tb.0),
                             new(&mut bind, &tb.1),
                             new(&mut bind, &a.1)
                         ];
                         let code = [
-                            code(&ltb.0, 0, labels),
-                            code(&tb.0, 1, labels),
-                            code(&tb.1, 2, labels),
-                            code(&a.1, 3, labels),
+                            code(&ltb.0, 0, &mut labels),
+                            code(&tb.0, 1, &mut labels),
+                            code(&tb.1, 2, &mut labels),
+                            code(&a.1, 3, &mut labels),
                         ];
                         Some(Square {labels, bind, code})
                     }
@@ -198,7 +206,7 @@ impl Square {
                 (EpiMono, "epi" | "mono") => code,
                 (EpiMono, "left_inv" | "right_inv") => code,
                 (EpiMono, "iso") => Iso,
-                (RevEpiMono, "epi" | "mono") => code,
+                (RevEpiMono, "mor" | "epi" | "mono") => code,
                 (RevEpiMono, "left_inv" | "right_inv") => code,
                 (RevEpiMono, "iso") => RevIso,
                 (Iso, "iso" | "left_inv" | "right_inv" | "mono" | "epi" | "mor") => code,
@@ -237,6 +245,7 @@ impl Square {
                 [0, a, b] => {
                     let a: avalog::Expr<sym::Sym> = avalog::Expr::Sym(self.bind[(a - 1) as usize].clone().into());
                     let b: avalog::Expr<sym::Sym> = avalog::Expr::Sym(self.bind[(b - 1) as usize].clone().into());
+                    let (a, b) = if is_reversed(self.code[i]) {(b, a)} else {(a, b)};
                     match self.code[i] {
                         Unknown => {}
                         Dir | RevDir => start.push(rel(a, ava(mor.clone(), b))),
