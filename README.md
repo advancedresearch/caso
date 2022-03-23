@@ -50,3 +50,17 @@ For example, `<->` is a 1-isomorphism and `<=>` is a 2-isomorphism.
 | Reverse Epi-Mono | `<<-!` |
 | Iso | `<->` |
 | Zero | `<>` |
+
+### Design
+
+Caso uses [Avalog](https://github.com/advancedresearch/avalog) as monotonic solver.
+
+The Avalog rules are located in "assets/cat.txt".
+
+The automated theorem prover uses the following steps:
+
+1. Parse expression
+2. Construct commutative square
+3. Expand knowledge about morphisms using rules for Category Theory
+4. Analyze new knowledge and reintegrate it into the commutative square
+5. Synthesize expression.
