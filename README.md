@@ -42,10 +42,8 @@ For example, `<->` is a 1-isomorphism and `<=>` is a 2-isomorphism.
 | Reverse Epi | `<<-` |
 | Mono | `!->` |
 | Reverse Mono | `<-!` |
-| Left Inverse | `<!->` |
-| Reverse Left Inverse | `<-!>` |
 | Right Inverse | `<->>` |
-| Reverse Right Inverse | `<<->` |
+| Left Inverse | `<<->` |
 | Epi-Mono | `!->>` |
 | Reverse Epi-Mono | `<<-!` |
 | Iso | `<->` |
