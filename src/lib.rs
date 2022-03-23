@@ -162,81 +162,81 @@ impl<'a> TryFrom<&'a str> for Expr {
     }
 }
 
-pub fn iso_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(Iso, n, Arc::new((a.into(), b.into())))
+pub fn iso_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(Iso, n, Arc::new((a, b)))
 }
 
-pub fn iso<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {iso_n(1, a, b)}
+pub fn iso(a: Expr, b: Expr) -> Expr {iso_n(1, a, b)}
 
 
-pub fn dir_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(Dir, n, Arc::new((a.into(), b.into())))
+pub fn dir_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(Dir, n, Arc::new((a, b)))
 }
 
-pub fn dir<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {dir_n(1, a, b)}
+pub fn dir(a: Expr, b: Expr) -> Expr {dir_n(1, a, b)}
 
-pub fn zero_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(Zero, n, Arc::new((a.into(), b.into())))
+pub fn zero_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(Zero, n, Arc::new((a, b)))
 }
 
-pub fn zero<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {zero_n(1, a, b)}
+pub fn zero(a: Expr, b: Expr) -> Expr {zero_n(1, a, b)}
 
-pub fn mono_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(Mono, n, Arc::new((a.into(), b.into())))
+pub fn mono_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(Mono, n, Arc::new((a, b)))
 }
 
-pub fn mono<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {mono_n(1, a, b)}
+pub fn mono(a: Expr, b: Expr) -> Expr {mono_n(1, a, b)}
 
-pub fn rev_mono_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(RevMono, n, Arc::new((a.into(), b.into())))
+pub fn rev_mono_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(RevMono, n, Arc::new((a, b)))
 }
 
-pub fn rev_mono<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {rev_mono_n(1, a, b)}
+pub fn rev_mono(a: Expr, b: Expr) -> Expr {rev_mono_n(1, a, b)}
 
-pub fn epi_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(Epi, n, Arc::new((a.into(), b.into())))
+pub fn epi_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(Epi, n, Arc::new((a, b)))
 }
 
-pub fn epi<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {epi_n(1, a, b)}
+pub fn epi(a: Expr, b: Expr) -> Expr {epi_n(1, a, b)}
 
-pub fn rev_epi_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
+pub fn rev_epi_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(RevEpi, n, Arc::new((a.into(), b.into())))
 }
 
-pub fn epi_mono_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(EpiMono, n, Arc::new((a.into(), b.into())))
+pub fn epi_mono_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(EpiMono, n, Arc::new((a, b)))
 }
 
-pub fn rev_epi<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {rev_epi_n(1, a, b)}
+pub fn rev_epi(a: Expr, b: Expr) -> Expr {rev_epi_n(1, a, b)}
 
-pub fn epi_mono<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {epi_mono_n(1, a, b)}
+pub fn epi_mono(a: Expr, b: Expr) -> Expr {epi_mono_n(1, a, b)}
 
-pub fn left_inv_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(LeftInv, n, Arc::new((a.into(), b.into())))
+pub fn left_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(LeftInv, n, Arc::new((a, b)))
 }
 
-pub fn left_inv<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {left_inv_n(1, a, b)}
+pub fn left_inv(a: Expr, b: Expr) -> Expr {left_inv_n(1, a, b)}
 
-pub fn rev_left_inv_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
+pub fn rev_left_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(RevLeftInv, n, Arc::new((a.into(), b.into())))
 }
 
-pub fn rev_left_inv<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {rev_left_inv_n(1, a, b)}
+pub fn rev_left_inv(a: Expr, b: Expr) -> Expr {rev_left_inv_n(1, a, b)}
 
-pub fn right_inv_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(RightInv, n, Arc::new((a.into(), b.into())))
+pub fn right_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(RightInv, n, Arc::new((a, b)))
 }
 
-pub fn right_inv<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {right_inv_n(1, a, b)}
+pub fn right_inv(a: Expr, b: Expr) -> Expr {right_inv_n(1, a, b)}
 
-pub fn rev_right_inv_n<A: Into<Expr>, B: Into<Expr>>(n: usize, a: A, b: B) -> Expr {
-    Mor(RevRightInv, n, Arc::new((a.into(), b.into())))
+pub fn rev_right_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
+    Mor(RevRightInv, n, Arc::new((a, b)))
 }
 
-pub fn rev_right_inv<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {rev_right_inv_n(1, a, b)}
+pub fn rev_right_inv(a: Expr, b: Expr) -> Expr {rev_right_inv_n(1, a, b)}
 
-pub fn path<A: Into<Expr>, B: Into<Expr>>(a: A, b: B) -> Expr {
-    Path(Arc::new((a.into(), b.into())))
+pub fn path(a: Expr, b: Expr) -> Expr {
+    Path(Arc::new((a, b)))
 }
 
 pub fn solve_str(a: &str) -> Result<String, String> {
