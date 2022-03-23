@@ -1,0 +1,14 @@
+[package]
+name = "caso"
+version = "0.1.0"
+edition = "2021"
+keywords = ["advancedresearch", "theorem", "proving", "assistant", "category"]
+description = "Category Theory Solver for Commutative Diagrams"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/advancedresearch/caso.git"
+homepage = "https://github.com/advancedresearch/caso"
+
+[dependencies]
+piston_meta = "2.0.1"
+avalog = "0.7.0"
