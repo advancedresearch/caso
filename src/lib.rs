@@ -246,76 +246,78 @@ pub fn solve_str(a: &str) -> Result<String, String> {
     Ok(format!("{}", a))
 }
 
+pub fn conv(a: &str) -> Expr {a.try_into().unwrap()}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn it_works() {
-        let a: Expr = "X".into();
+        let a: Expr = conv("X");
         assert_eq!(a, Obj(Arc::new("X".into())));
 
-        let b = iso("X", "Y");
-        assert_eq!(b, Mor(Iso, 1, Arc::new(("X".into(), "Y".into()))));
+        let b = iso(conv("X"), conv("Y"));
+        assert_eq!(b, Mor(Iso, 1, Arc::new((conv("X"), conv("Y")))));
 
-        let c = dir("X", "Y");
-        assert_eq!(c, Mor(Dir, 1, Arc::new(("X".into(), "Y".into()))));
+        let c = dir(conv("X"), conv("Y"));
+        assert_eq!(c, Mor(Dir, 1, Arc::new((conv("X"), conv("Y")))));
 
-        let b2: Expr = "X <-> Y".into();
+        let b2: Expr = conv("X <-> Y");
         assert_eq!(b2, b);
 
-        let b3: Expr = "X -> Y".into();
-        assert_eq!(b3, dir("X", "Y"));
+        let b3: Expr = conv("X -> Y");
+        assert_eq!(b3, dir(conv("X"), conv("Y")));
 
-        let b4: Expr = "X <> Y".into();
-        assert_eq!(b4, zero("X", "Y"));
+        let b4: Expr = conv("X <> Y");
+        assert_eq!(b4, zero(conv("X"), conv("Y")));
 
-        let b5: Expr = "X => Y".into();
-        assert_eq!(b5, dir_n(2, "X", "Y"));
+        let b5: Expr = conv("X => Y");
+        assert_eq!(b5, dir_n(2, conv("X"), conv("Y")));
 
-        let b6: Expr = "X <=> Y".into();
-        assert_eq!(b6, iso_n(2, "X", "Y"));
+        let b6: Expr = conv("X <=> Y");
+        assert_eq!(b6, iso_n(2, conv("X"), conv("Y")));
 
-        let b7: Expr = "X ->> Y".into();
-        assert_eq!(b7, epi("X", "Y"));
+        let b7: Expr = conv("X ->> Y");
+        assert_eq!(b7, epi(conv("X"), conv("Y")));
 
-        let b8: Expr = "X !->> Y".into();
-        assert_eq!(b8, epi_mono("X", "Y"));
+        let b8: Expr = conv("X !->> Y");
+        assert_eq!(b8, epi_mono(conv("X"), conv("Y")));
 
-        let b9: Expr = "X <!-> Y".into();
-        assert_eq!(b9, left_inv("X", "Y"));
+        let b9: Expr = conv("X <!-> Y");
+        assert_eq!(b9, left_inv(conv("X"), conv("Y")));
 
-        let b10: Expr = "X <->> Y".into();
-        assert_eq!(b10, right_inv("X", "Y"));
+        let b10: Expr = conv("X <->> Y");
+        assert_eq!(b10, right_inv(conv("X"), conv("Y")));
 
-        let b11: Expr = "X <<- Y".into();
-        assert_eq!(b11, rev_epi("X", "Y"));
+        let b11: Expr = conv("X <<- Y");
+        assert_eq!(b11, rev_epi(conv("X"), conv("Y")));
 
-        let b12: Expr = "X <-! Y".into();
-        assert_eq!(b12, rev_mono("X", "Y"));
+        let b12: Expr = conv("X <-! Y");
+        assert_eq!(b12, rev_mono(conv("X"), conv("Y")));
 
-        let b13: Expr = "X <-!> Y".into();
-        assert_eq!(b13, rev_left_inv("X", "Y"));
+        let b13: Expr = conv("X <-!> Y");
+        assert_eq!(b13, rev_left_inv(conv("X"), conv("Y")));
 
-        let b14: Expr = "X <<-> Y".into();
-        assert_eq!(b14, rev_right_inv("X", "Y"));
+        let b14: Expr = conv("X <<-> Y");
+        assert_eq!(b14, rev_right_inv(conv("X"), conv("Y")));
 
-        let b15: Expr = "X <==> Y".into();
-        assert_eq!(b15, iso_n(4, "X", "Y"));
+        let b15: Expr = conv("X <==> Y");
+        assert_eq!(b15, iso_n(4, conv("X"), conv("Y")));
 
-        let b16: Expr = "X <-=> Y".into();
-        assert_eq!(b16, iso_n(3, "X", "Y"));
+        let b16: Expr = conv("X <-=> Y");
+        assert_eq!(b16, iso_n(3, conv("X"), conv("Y")));
 
-        let b17: Expr = "X <--> Y".into();
-        assert_eq!(b17, iso_n(2, "X", "Y"));
+        let b17: Expr = conv("X <--> Y");
+        assert_eq!(b17, iso_n(2, conv("X"), conv("Y")));
 
-        let d: Expr = "X[Y]".into();
-        assert_eq!(d, path("X", "Y"));
+        let d: Expr = conv("X[Y]");
+        assert_eq!(d, path(conv("X"), conv("Y")));
 
-        let e: Expr = "f[g] <=> h".into();
-        assert_eq!(e, iso_n(2, path("f", "g"), "h"));
+        let e: Expr = conv("f[g] <=> h");
+        assert_eq!(e, iso_n(2, path(conv("f"), conv("g")), conv("h")));
 
-        let z: Expr = "0".into();
+        let z: Expr = conv("0");
         assert_eq!(z, _0);
     }
 
@@ -323,61 +325,62 @@ mod tests {
     fn normalise() {
         use code::Square;
 
-        let a: Expr = "(a -> b)[(c -> a) -> (b -> d)]".into();
-        assert_eq!(a.left().unwrap(), "a -> b".into());
-        assert_eq!(a.top().unwrap(), "c -> a".into());
-        assert_eq!(a.bottom().unwrap(), "b -> d".into());
+        let a: Expr = conv("(a -> b)[(c -> a) -> (b -> d)]");
+        assert_eq!(a.left().unwrap(), conv("a -> b"));
+        assert_eq!(a.top().unwrap(), conv("c -> a"));
+        assert_eq!(a.bottom().unwrap(), conv("b -> d"));
 
-        let b = iso_n(2, a, "c <-> d");
+        let cd: Expr = conv("c <-> d");
+        let b = iso_n(2, a, cd);
         let sq = Square::new(&b).unwrap();
         assert_eq!(sq, Square {
-            bind: vec!["a".into(), "b".into(), "c".into(), "d".into()],
+            bind: vec![conv("a"), conv("b"), conv("c"), conv("d")],
             labels: [[0, 1, 2], [0, 3, 1], [0, 2, 4], [0, 3, 4]],
             code: [Dir, RevDir, Dir, Iso],
         });
         assert_eq!(code::eval(sq.code), [Iso; 4]);
 
-        let a: Expr = "(a -> b)[(b -> c) -> (d -> b)] <=> (c -> d)".into();
+        let a: Expr = conv("(a -> b)[(b -> c) -> (d -> b)] <=> (c -> d)");
         assert_eq!(Square::new(&a).unwrap().code, [Dir, Dir, RevDir, Dir]);
     }
 
     #[test]
     fn test_eval() {
-        let a: Expr = "f[(X !-> 1) -> (0 !-> Y)] <=> (0 <-> 1)".into();
+        let a: Expr = conv("f[(X !-> 1) -> (0 !-> Y)] <=> (0 <-> 1)");
         let sq = code::Square::new(&a).unwrap();
         assert_eq!(sq.code, [Unknown, Mono, Mono, RevIso]);
 
-        let a: Expr = "(X <> Y)[(X !-> 1) -> (0 !-> Y)] <=> (0 <-> 1)".into();
+        let a: Expr = conv("(X <> Y)[(X !-> 1) -> (0 !-> Y)] <=> (0 <-> 1)");
         let sq = code::Square::new(&a).unwrap();
         assert_eq!(sq.code, [Zero, Mono, RevMono, RevIso]);
         assert_eq!(sq.eval(), [Zero, Zero, RevZero, RevZero]);
 
-        let a: Expr = "(X -> Y)[(X !-> 1) -> (0 !-> Y)] <=> (0 <-> 1)".into();
+        let a: Expr = conv("(X -> Y)[(X !-> 1) -> (0 !-> Y)] <=> (0 <-> 1)");
         let sq = code::Square::new(&a).unwrap();
         assert_eq!(sq.code, [Dir, Mono, RevMono, RevIso]);
         assert_eq!(sq.eval(), [Zero, Zero, RevZero, RevZero]);
 
-        let a: Expr = "(X -> Y)[(X !-> 1) -> (0 -> Y)] <=> (0 <-> 1)".into();
+        let a: Expr = conv("(X -> Y)[(X !-> 1) -> (0 -> Y)] <=> (0 <-> 1)");
         let sq = code::Square::new(&a).unwrap();
         assert_eq!(sq.code, [Dir, Mono, RevDir, RevIso]);
         assert_eq!(sq.eval(), [Zero, Zero, RevZero, RevZero]);
 
-        let a: Expr = "(A ->> B)[(C ->> A) -> (B ->> D)] <=> (D ->> C)".into();
+        let a: Expr = conv("(A ->> B)[(C ->> A) -> (B ->> D)] <=> (D ->> C)");
         let sq = code::Square::new(&a).unwrap();
         assert_eq!(sq.code, [Epi, RevEpi, Epi, RevEpi]);
         assert_eq!(sq.eval(), [EpiMono, RevEpiMono, EpiMono, RevEpiMono]);
 
-        let a: Expr = "(A -> B)[(C -> A) -> (B -> D)] <=> (D -> C)".into();
+        let a: Expr = conv("(A -> B)[(C -> A) -> (B -> D)] <=> (D -> C)");
         let sq = code::Square::new(&a).unwrap();
         assert_eq!(sq.code, [Dir, RevDir, Dir, RevDir]);
         assert_eq!(sq.eval(), [Dir, RevDir, Dir, RevDir]);
 
-        let a: Expr = "(A -> B)[(C -> A) -> (B -> D)] <=> (D <-> C)".into();
+        let a: Expr = conv("(A -> B)[(C -> A) -> (B -> D)] <=> (D <-> C)");
         let sq = code::Square::new(&a).unwrap();
         assert_eq!(sq.code, [Dir, RevDir, Dir, RevIso]);
         assert_eq!(sq.eval(), [Dir, RevDir, Dir, RevIso]);
 
-        let a: Expr = "(A <-> B)[(C <-> A) -> (B <-> D)] <=> (C -> D)".into();
+        let a: Expr = conv("(A <-> B)[(C <-> A) -> (B <-> D)] <=> (C -> D)");
         let sq = code::Square::new(&a).unwrap();
         assert_eq!(sq.code, [Iso, RevIso, Iso, Dir]);
         assert_eq!(sq.eval(), [Iso, RevIso, Iso, Iso]);
@@ -386,7 +389,7 @@ mod tests {
     #[test]
     fn format() {
         fn check(a: &str) {
-            let b: Expr = a.into();
+            let b: Expr = conv(a);
             assert_eq!(&format!("{}", b), a);
         }
 
