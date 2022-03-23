@@ -2,6 +2,13 @@
 //!
 //! Category Theory Solver for Commutative Diagrams.
 //!
+//!
+//! ```text
+//! === Caso 0.1 ===
+//! > (A <-> B)[(A <-> C) -> (B <-> D)] <=> (C -> D)
+//! (A <-> B)[(A <-> C) -> (B <-> D)] <=> (C <-> D)
+//! ```
+//!
 //! | Morphism | Notation |
 //! | --- | --- |
 //! | Directional | `->` |
