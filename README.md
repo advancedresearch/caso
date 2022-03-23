@@ -18,6 +18,17 @@ Then, to run:
 
 `caso`
 
+### Syntax
+
+A commuative diagram in Caso is written in the following grammar:
+
+`<left>[<top> -> <bottom>] <=> <right>`
+
+Caso automatically corrects directional errors,
+e.g. when you type `(a -> b)[(c -> a) -> ...] <=> ...`.
+the `c` is wrong relative to `a`,
+so, Caso corrects this to `(a -> b)[(a <- c) -> ...] <=> ...`.
+
 | Morphism | Notation |
 | --- | --- |
 | Directional | `->` |
