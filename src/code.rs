@@ -315,12 +315,10 @@ impl Square {
     /// Update square.
     pub fn update(&self, e: &mut Expr) {
         fn fix(mor: &mut Morphism, code: Morphism, ab: &mut Arc<(Expr, Expr)>) {
-            if is_reversed(code) {
+            if is_reversed(code) != is_reversed(*mor) {
                 *ab = Arc::new((ab.1.clone(), ab.0.clone()));
-                *mor = reverse(code);
-            } else {
-                *mor = code;
             }
+            *mor = code;
         }
 
         use crate::Expr::*;
