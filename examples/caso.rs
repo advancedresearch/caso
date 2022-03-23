@@ -20,6 +20,19 @@ fn main() {
         match &*input.trim() {
             "bye" => break,
             "help" => {print_help(); continue}
+            x if x.starts_with("echo ") => {
+                match caso::parsing::parse_str(x[5..].trim()) {
+                    Ok(x) => {
+                        println!("{}", x);
+                        println!("{:?}", x);
+                        continue;
+                    }
+                    Err(err) => {
+                        println!("ERROR:\n{}", err);
+                        continue;
+                    }
+                }
+            }
             "" => {
                 // Print separator for readability.
                 print!("\n------------------------------------<o=o");
@@ -27,8 +40,9 @@ fn main() {
                 continue;
             }
             x => {
-                if let Some(y) = solve_str(x) {
-                    println!("{}", y);
+                match solve_str(x) {
+                    Ok(y) => println!("{}", y),
+                    Err(err) => eprintln!("{}", err),
                 }
             }
         }
