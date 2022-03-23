@@ -1,3 +1,5 @@
+//! Commutative diagram solver.
+
 use crate::Expr;
 use crate::Morphism::{self, *};
 use crate::sym;
@@ -76,15 +78,20 @@ fn reverse(code: Morphism) -> Morphism {
     }
 }
 
+/// Represents a commutative square.
 #[derive(Debug, PartialEq, Eq)]
 pub struct Square {
+    /// Bound expressions.
     pub bind: Vec<Expr>,
+    /// Labels of edges.
     pub labels: [[u8; 3]; 4],
+    /// Morphism codes of the edges.
     pub code: [Morphism; 4],
 }
 
 impl Square {
-    pub fn new(expr: &crate::Expr) -> Option<Self> {
+    /// Creates a new square.
+    pub fn new(expr: &Expr) -> Option<Self> {
         fn find(bind: &mut Vec<Expr>, a: &Expr) -> u8 {
             for (i, e) in bind.iter().enumerate() {
                 if e == a {return (i + 1) as u8}
@@ -163,6 +170,7 @@ impl Square {
         }
     }
 
+    /// Evaluates square.
     pub fn eval(&self) -> [Morphism; 4] {
         fn update_code(code: Morphism, av: &Arc<String>) -> Morphism {
             match (code, &***av) {
@@ -304,6 +312,7 @@ impl Square {
         new_code
     }
 
+    /// Update square.
     pub fn update(&self, e: &mut Expr) {
         fn fix(mor: &mut Morphism, code: Morphism, ab: &mut Arc<(Expr, Expr)>) {
             if is_reversed(code) {
