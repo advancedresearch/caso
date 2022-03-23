@@ -1,3 +1,5 @@
+#![deny(missing_docs)]
+
 //! # Caso
 //!
 //! Category Theory Solver for Commutative Diagrams.
@@ -49,30 +51,52 @@ pub mod sym;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Hash)]
 #[repr(u8)]
 pub enum Morphism {
+    /// Unknown morphism.
     Unknown,
+    /// Directional.
     Dir,
+    /// Reverse directional.
     RevDir,
+    /// Mono.
     Mono,
+    /// Reverse mono.
     RevMono,
+    /// Epi.
     Epi,
+    /// Reverse epi.
     RevEpi,
+    /// Epi-mono.
     EpiMono,
+    /// Reverse epi-mono.
     RevEpiMono,
+    /// Left inverse.
     LeftInv,
+    /// Reverse left inverse.
     RevLeftInv,
+    /// Right inverse.
     RightInv,
+    /// Reverse right inverse.
     RevRightInv,
+    /// Iso.
     Iso,
+    /// Reverse iso.
     RevIso,
+    /// Zero.
     Zero,
+    /// Reverse zero.
     RevZero,
 }
 
+/// Stores Caso expression.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Hash)]
 pub enum Expr {
+    /// A zero object.
     _0,
+    /// An object.
     Obj(Arc<String>),
+    /// A morphism.
     Mor(Morphism, usize, Arc<(Expr, Expr)>),
+    /// A path.
     Path(Arc<(Expr, Expr)>),
 }
 
@@ -124,6 +148,7 @@ impl fmt::Display for Expr {
 }
 
 impl Expr {
+    /// Returns left edge, if any.
     pub fn left(&self) -> Option<Expr> {
         match self {
             Path(a) => Some(a.0.clone()),
@@ -131,6 +156,7 @@ impl Expr {
         }
     }
 
+    /// Returns top edge, if any.
     pub fn top(&self) -> Option<Expr> {
         match self {
             Path(a) => match &a.1 {
@@ -141,6 +167,7 @@ impl Expr {
         }
     }
 
+    /// Returns bottom edge, if any.
     pub fn bottom(&self) -> Option<Expr> {
         match self {
             Path(a) => match &a.1 {
@@ -162,83 +189,111 @@ impl<'a> TryFrom<&'a str> for Expr {
     }
 }
 
+/// Higher iso e.g. `A <=> B`.
 pub fn iso_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(Iso, n, Arc::new((a, b)))
 }
 
+/// Iso e.g. `A <-> B`.
 pub fn iso(a: Expr, b: Expr) -> Expr {iso_n(1, a, b)}
 
-
+/// Higher directional e.g. `A => B`.
 pub fn dir_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(Dir, n, Arc::new((a, b)))
 }
 
+/// Directional e.g. `A -> B`.
 pub fn dir(a: Expr, b: Expr) -> Expr {dir_n(1, a, b)}
 
+/// Higher zero.
 pub fn zero_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(Zero, n, Arc::new((a, b)))
 }
 
+/// Zero e.g. `A <> B`.
 pub fn zero(a: Expr, b: Expr) -> Expr {zero_n(1, a, b)}
 
+/// Higher mono e.g. `A !=> B`.
 pub fn mono_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(Mono, n, Arc::new((a, b)))
 }
 
+/// Mono e.g. `A !-> B`.
 pub fn mono(a: Expr, b: Expr) -> Expr {mono_n(1, a, b)}
 
+/// Higher reverse mono e.g. `A <=! B`.
 pub fn rev_mono_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(RevMono, n, Arc::new((a, b)))
 }
 
+/// Reverse mono e.g. `A <-! B`.
 pub fn rev_mono(a: Expr, b: Expr) -> Expr {rev_mono_n(1, a, b)}
 
+/// Higher epi e.g. `A =>> B`.
 pub fn epi_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(Epi, n, Arc::new((a, b)))
 }
 
+/// Epi e.g. `A ->> B`.
 pub fn epi(a: Expr, b: Expr) -> Expr {epi_n(1, a, b)}
 
+/// Reverse epi-mono e.g. `A <<=! B`.
 pub fn rev_epi_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(RevEpi, n, Arc::new((a.into(), b.into())))
 }
 
+/// Higher epi-mono e.g. `A !=>> B`.
 pub fn epi_mono_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(EpiMono, n, Arc::new((a, b)))
 }
 
+/// Reverse epi-mono e.g. `A <<-! B`.
 pub fn rev_epi(a: Expr, b: Expr) -> Expr {rev_epi_n(1, a, b)}
 
+/// Epi-mono e.g. `A !->> B`.
 pub fn epi_mono(a: Expr, b: Expr) -> Expr {epi_mono_n(1, a, b)}
 
+/// Higher left inverse e.g. `A <!=> B`.
 pub fn left_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(LeftInv, n, Arc::new((a, b)))
 }
 
+/// Left inverse e.g. `A <!-> B`.
 pub fn left_inv(a: Expr, b: Expr) -> Expr {left_inv_n(1, a, b)}
 
+/// Higher reverse left inverse e.g. `A <=!> B`.
 pub fn rev_left_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(RevLeftInv, n, Arc::new((a.into(), b.into())))
 }
 
+/// Reverse left inverse e.g. `A <-!> B`.
 pub fn rev_left_inv(a: Expr, b: Expr) -> Expr {rev_left_inv_n(1, a, b)}
 
+/// Higher right inverse e.g. `A <=>> B`.
 pub fn right_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(RightInv, n, Arc::new((a, b)))
 }
 
+/// Right inverse e.g. `A <->> B`.
 pub fn right_inv(a: Expr, b: Expr) -> Expr {right_inv_n(1, a, b)}
 
+/// Higher reverse right inverse e.g. `A <<=> B`.
 pub fn rev_right_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(RevRightInv, n, Arc::new((a, b)))
 }
 
+/// Reverse right inverse e.g. `A <<-> B`.
 pub fn rev_right_inv(a: Expr, b: Expr) -> Expr {rev_right_inv_n(1, a, b)}
 
+/// A path e.g. `X[Y]`.
 pub fn path(a: Expr, b: Expr) -> Expr {
     Path(Arc::new((a, b)))
 }
 
+/// Solve a string.
+///
+/// Returns the solution as a string.
+/// Produces an error message if the solver failed.
 pub fn solve_str(a: &str) -> Result<String, String> {
     let mut a: Expr = a.try_into()?;
     let sq = code::Square::new(&a).ok_or("Could not convert into square".to_string())?;
@@ -246,6 +301,7 @@ pub fn solve_str(a: &str) -> Result<String, String> {
     Ok(format!("{}", a))
 }
 
+/// Converts string into expression (panics when format is invalid).
 pub fn conv(a: &str) -> Expr {a.try_into().unwrap()}
 
 #[cfg(test)]

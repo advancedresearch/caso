@@ -1,3 +1,5 @@
+//! Parse syntax.
+
 use crate::*;
 
 use piston_meta::{Convert, Range};

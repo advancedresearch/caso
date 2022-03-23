@@ -1,3 +1,5 @@
+//! Data structure for symbols in Avalog solver.
+
 use crate::*;
 
 /// Used to represent symbols in avalog.
