@@ -176,6 +176,7 @@ impl Square {
                 (Mono, "mono" | "mor") => code,
                 (Mono, "epi") => EpiMono,
                 (Mono, "zero") => Zero,
+                (RevMono, "mor") => code,
                 (RevMono, "mono") => code,
                 (RevMono, "epi") => RevEpiMono,
                 (RevMono, "zero") => RevZero,
