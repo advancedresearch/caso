@@ -26,6 +26,8 @@
 //!
 //! `<left>[<top> -> <bottom>] <=> <right>`
 //!
+//! This syntax is based on the notation for [Path Semantics](https://github.com/advancedresearch/path_semantics).
+//!
 //! Caso automatically corrects directional errors,
 //! e.g. when you type `(a -> b)[(c -> a) -> ...] <=> ...`.
 //! the `c` is wrong relative to `a`,
