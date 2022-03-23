@@ -1,7 +1,7 @@
 use caso::solve_str;
 
 fn main() {
-    println!("=== Caso 0.1 ===");
+    println!("=== Caso 0.2 ===");
     println!("Type `help` for more information.");
     loop {
         use std::io::{self, Write};
