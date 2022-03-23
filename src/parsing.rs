@@ -100,10 +100,10 @@ fn parse_mor(
             mor = Some(RevEpiMono);
         } else if let Ok((range, _)) = convert.meta_bool("left_inv") {
             convert.update(range);
-            mor = Some(LeftInv);
+            mor = Some(RevRightInv);
         } else if let Ok((range, _)) = convert.meta_bool("rev_left_inv") {
             convert.update(range);
-            mor = Some(RevLeftInv);
+            mor = Some(RightInv);
         } else if let Ok((range, _)) = convert.meta_bool("right_inv") {
             convert.update(range);
             mor = Some(RightInv);

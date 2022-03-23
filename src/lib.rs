@@ -44,10 +44,8 @@
 //! | Reverse Epi | `<<-` |
 //! | Mono | `!->` |
 //! | Reverse Mono | `<-!` |
-//! | Left Inverse | `<!->` |
-//! | Reverse Left Inverse | `<-!>` |
 //! | Right Inverse | `<->>` |
-//! | Reverse Right Inverse | `<<->` |
+//! | Left Inverse | `<<->` |
 //! | Epi-Mono | `!->>` |
 //! | Reverse Epi-Mono | `<<-!` |
 //! | Iso | `<->` |
@@ -112,10 +110,6 @@ pub enum Morphism {
     EpiMono,
     /// Reverse epi-mono.
     RevEpiMono,
-    /// Left inverse.
-    LeftInv,
-    /// Reverse left inverse.
-    RevLeftInv,
     /// Right inverse.
     RightInv,
     /// Reverse right inverse.
@@ -159,9 +153,8 @@ impl fmt::Display for Expr {
                 if needs_parens(&a.0) {write!(w, "({}) ", a.0)?}
                 else {write!(w, "{} ", a.0)?}
                 write!(w, "{}", match mor {
-                    Zero | RevZero | Iso | RevIso | RevDir | RevMono | RevLeftInv | RightInv => "<",
+                    Zero | RevZero | Iso | RevIso | RevDir | RevMono | RightInv => "<",
                     Mono | EpiMono => "!",
-                    LeftInv => "<!",
                     RevEpi | RevEpiMono | RevRightInv => "<<",
                     Unknown | Dir | Epi => "",
                 })?;
@@ -170,10 +163,9 @@ impl fmt::Display for Expr {
                     for _ in 0..*n % 2 {write!(w, "-")?}
                 }
                 write!(w, "{}", match mor {
-                    Dir | Zero | RevZero | Iso | RevIso | Mono | LeftInv | RevRightInv => ">",
+                    Dir | Zero | RevZero | Iso | RevIso | Mono | RevRightInv => ">",
                     Epi | RightInv | EpiMono => ">>",
                     RevMono | RevEpiMono => "!",
-                    RevLeftInv => "!>",
                     Unknown | RevDir | RevEpi => ""
                 })?;
                 if needs_parens(&a.1) {write!(w, " ({})", a.1)?}
@@ -296,22 +288,6 @@ pub fn rev_epi(a: Expr, b: Expr) -> Expr {rev_epi_n(1, a, b)}
 /// Epi-mono e.g. `A !->> B`.
 pub fn epi_mono(a: Expr, b: Expr) -> Expr {epi_mono_n(1, a, b)}
 
-/// Higher left inverse e.g. `A <!=> B`.
-pub fn left_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
-    Mor(LeftInv, n, Arc::new((a, b)))
-}
-
-/// Left inverse e.g. `A <!-> B`.
-pub fn left_inv(a: Expr, b: Expr) -> Expr {left_inv_n(1, a, b)}
-
-/// Higher reverse left inverse e.g. `A <=!> B`.
-pub fn rev_left_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
-    Mor(RevLeftInv, n, Arc::new((a.into(), b.into())))
-}
-
-/// Reverse left inverse e.g. `A <-!> B`.
-pub fn rev_left_inv(a: Expr, b: Expr) -> Expr {rev_left_inv_n(1, a, b)}
-
 /// Higher right inverse e.g. `A <=>> B`.
 pub fn right_inv_n(n: usize, a: Expr, b: Expr) -> Expr {
     Mor(RightInv, n, Arc::new((a, b)))
@@ -383,9 +359,6 @@ mod tests {
         let b8: Expr = conv("X !->> Y");
         assert_eq!(b8, epi_mono(conv("X"), conv("Y")));
 
-        let b9: Expr = conv("X <!-> Y");
-        assert_eq!(b9, left_inv(conv("X"), conv("Y")));
-
         let b10: Expr = conv("X <->> Y");
         assert_eq!(b10, right_inv(conv("X"), conv("Y")));
 
@@ -394,9 +367,6 @@ mod tests {
 
         let b12: Expr = conv("X <-! Y");
         assert_eq!(b12, rev_mono(conv("X"), conv("Y")));
-
-        let b13: Expr = conv("X <-!> Y");
-        assert_eq!(b13, rev_left_inv(conv("X"), conv("Y")));
 
         let b14: Expr = conv("X <<-> Y");
         assert_eq!(b14, rev_right_inv(conv("X"), conv("Y")));
@@ -508,8 +478,6 @@ mod tests {
         check("X <<- Y");
         check("X !-> Y");
         check("X <-! Y");
-        check("X <!-> Y");
-        check("X <-!> Y");
         check("X <->> Y");
         check("X <<-> Y");
         check("X <<- Y");
@@ -574,7 +542,7 @@ mod tests {
         let ref a = solve_str("(A <->> B)[(A <<-> C) -> (B <->> D)] <=> (C <<-> D)").unwrap();
         assert_eq!(a, "(A <-> B)[(A <-> C) -> (B <-> D)] <=> (C <-> D)");
 
-        let ref a = solve_str("(A <-!> B)[(A <!-> C) -> (B <-!> D)] <=> (C <!-> D)").unwrap();
+        let ref a = solve_str("(A <<-> B)[(A <->> C) -> (B <<-> D)] <=> (C <->> D)").unwrap();
         assert_eq!(a, "(A <-> B)[(A <-> C) -> (B <-> D)] <=> (C <-> D)");
     }
 }

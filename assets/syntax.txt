@@ -12,9 +12,7 @@ _sep: "()[]-=<>!"
   [plus ">":"dir"]
   ["!" plus ">>":"epi_mono"]
   ["!" plus ">":"mono"]
-  ["<" plus "!>":"rev_left_inv"]
   ["<" plus "!":"rev_mono"]
-  ["<!" plus ">":"left_inv"]
   ["<":"rev_dir" plus]
 } .w! expr:"right"]
 2 lexpr = {

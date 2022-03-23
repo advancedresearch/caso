@@ -50,8 +50,8 @@ pub fn eval(code: [Morphism; 4]) -> [Morphism; 4] {
 
 fn is_reversed(code: Morphism) -> bool {
     match code {
-        Dir | Mono | Epi | EpiMono | LeftInv | RightInv | Iso => false,
-        RevDir | RevMono | RevEpi | RevEpiMono | RevLeftInv | RevRightInv | RevIso | RevZero => true,
+        Dir | Mono | Epi | EpiMono | RightInv | Iso => false,
+        RevDir | RevMono | RevEpi | RevEpiMono | RevRightInv | RevIso | RevZero => true,
         Unknown | Zero => false,
     }
 }
@@ -67,8 +67,6 @@ fn reverse(code: Morphism) -> Morphism {
         RevEpi => Epi,
         EpiMono => RevEpiMono,
         RevEpiMono => EpiMono,
-        LeftInv => RevLeftInv,
-        RevLeftInv => LeftInv,
         RightInv => RevRightInv,
         RevRightInv => RightInv,
         Iso => RevIso,
@@ -191,8 +189,8 @@ impl Square {
                 (RevDir, "mono") => RevMono,
                 (RevDir, "iso") => RevIso,
                 (RevDir, "zero") => RevZero,
+                (RevDir, "left_inv") => RevRightInv,
                 (RevDir, "right_inv") => code,
-                (RevDir, "left_inv") => RevLeftInv,
                 (Mono, "mono" | "mor") => code,
                 (Mono, "epi") => EpiMono,
                 (Mono, "zero") => Zero,
@@ -213,10 +211,6 @@ impl Square {
                 (RevEpiMono, "mor" | "epi" | "mono") => code,
                 (RevEpiMono, "left_inv" | "right_inv") => code,
                 (RevEpiMono, "iso") => RevIso,
-                (LeftInv, "mor" | "mono" | "left_inv") => code,
-                (LeftInv, "right_inv") => Iso,
-                (RevLeftInv, "mor" | "mono" | "left_inv") => code,
-                (RevLeftInv, "right_inv") => RevIso,
                 (RightInv, "mor" | "epi" | "right_inv") => code,
                 (RightInv, "mono") => code,
                 (RightInv, "left_inv" | "iso") => Iso,
@@ -248,7 +242,6 @@ impl Square {
 
         let zero: sym::Sym = Arc::new("zero".to_string()).into();
         let iso: sym::Sym = Arc::new("iso".to_string()).into();
-        let left_inv: sym::Sym = Arc::new("left_inv".to_string()).into();
         let right_inv: sym::Sym = Arc::new("right_inv".to_string()).into();
         let mono: sym::Sym = Arc::new("mono".to_string()).into();
         let epi: sym::Sym = Arc::new("epi".to_string()).into();
@@ -271,7 +264,6 @@ impl Square {
                             start.push(rel(a.clone(), ava(epi.clone(), b.clone())));
                             start.push(rel(a, ava(mono.clone(), b)));
                         }
-                        LeftInv | RevLeftInv => start.push(rel(a, ava(left_inv.clone(), b))),
                         RightInv | RevRightInv => start.push(rel(a, ava(right_inv.clone(), b))),
                     }
                 }
