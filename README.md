@@ -29,6 +29,9 @@ e.g. when you type `(a -> b)[(c -> a) -> ...] <=> ...`.
 the `c` is wrong relative to `a`,
 so, Caso corrects this to `(a -> b)[(a <- c) -> ...] <=> ...`.
 
+Higher morpisms are supported by counting `-` (1) and `=` (2) in the arrow.
+For example, `<->` is a 1-isomorphism and `<=>` is a 2-isomorphism.
+
 | Morphism | Notation |
 | --- | --- |
 | Directional | `->` |
