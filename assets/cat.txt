@@ -1,0 +1,35 @@
+// Isomorphism.
+(X, iso'(Y)) :- (X, left_inv'(Y)), (X, right_inv'(Y)).
+(X, iso'(Y)) :- (Y, iso'(X)).
+(X, iso'(X)) :- (X, mor'(Y)).
+(Y, iso'(Y)) :- (X, mor'(Y)).
+
+// Transitivity.
+(X, mor'(Z)) :- (X, mor'(Y)), (Y, mor'(Z)).
+(X, mono'(Z)) :- (X, mono'(Y)), (Y, mono'(Z)).
+(X, epi'(Z)) :- (X, epi'(Y)), (Y, epi'(Z)).
+(X, left_inv'(Z)) :- (X, left_inv'(Y)), (Y, left_inv'(Z)).
+(X, right_inv'(Z)) :- (X, right_inv'(Y)), (Y, right_inv'(Z)).
+
+// Projection.
+(X, iso'(Y)) :- (X, zero'(Y)).
+(X, left_inv'(Y)) :- (X, iso'(Y)).
+(X, right_inv'(Y)) :- (X, iso'(Y)).
+(X, mono'(Y)) :- (X, left_inv'(Y)).
+(X, epi'(Y)) :- (X, right_inv'(Y)).
+(X, mor'(Y)) :- (X, mono'(Y)).
+(X, mor'(Y)) :- (X, epi'(Y)).
+
+// Monomorphism.
+(X, F'(Y)) :- (Y, mono'(Z)), (X, mor'(Y)), (X, F'(Y)).
+(X, mono'(Y)) :- (X, epi'(Y)), (Y, epi'(X)).
+
+// Epimorphism.
+(Y, F'(Z)) :- (X, epi'(Y)), (Y, mor'(Z)), (Y, F'(Z)).
+(X, epi'(Y)) :- (X, mono'(Y)), (Y, mono'(X)).
+
+// Zero.
+(X, zero'(Y)) :- (Y, zero'(X)).
+(X, zero'(Z)) :- (X, F'(Y)), (Y, zero'(Z)).
+(X, zero'(Z)) :- (X, zero'(Y)), (Y, F'(Z)).
+(0, zero'(0))

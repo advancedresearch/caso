@@ -1,0 +1,31 @@
+_sep: "()[]-=<>!"
+
+4 plus = .r!({"=":"+2" "-":"+1"})
+3 mor = [lexpr:"left" .w! {
+  "<>":"zero"
+  ["<":"right_inv" plus ">>"]
+  ["<":"iso" plus ">"]
+  [plus ">>":"epi"]
+  ["<<":"rev_right_inv" plus ">"]
+  ["<<":"rev_epi_mono" plus "!"]
+  ["<<":"rev_epi" plus]
+  [plus ">":"dir"]
+  ["!" plus ">>":"epi_mono"]
+  ["!" plus ">":"mono"]
+  ["<" plus "!>":"rev_left_inv"]
+  ["<" plus "!":"rev_mono"]
+  ["<!" plus ">":"left_inv"]
+  ["<":"rev_dir" plus]
+} .w! expr:"right"]
+2 lexpr = {
+  [{
+    ["(" .w? expr .w? ")"]
+    "0":"0"
+    .._sep!:"obj"
+  } ?["[" .w? expr:"path" .w? "]"]]
+}
+1 expr = {
+  mor:"mor"
+  lexpr
+}
+0 doc = [.w? expr:"expr" .w?]
