@@ -53,6 +53,19 @@
 //! | Iso | `<->` |
 //! | Zero | `<>` |
 //!
+//! ### How to solve triangles
+//!
+//! Triangles can be expanded into commutative square using identity morphisms.
+//!
+//! For example:
+//!
+//! ```text
+//! > (A <-> B)[(A -> C) -> (B -> C)] <=> (C -> C)
+//! (A <-> B)[(A -> C) -> (B -> C)] <=> (C <-> C)
+//! ```
+//!
+//! Here, `C -> C` is an identity morphism from `C` to itself.
+//!
 //! ### Design
 //!
 //! Caso uses [Avalog](https://github.com/advancedresearch/avalog) as monotonic solver.
