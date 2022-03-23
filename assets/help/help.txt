@@ -1,0 +1,12 @@
+=== Caso Help ===
+Made by Sven Nilsen, 2022
+
+Caso uses Avalog as monotonic solver:
+https://github.com/advancedresearch/avalog
+
+Special commands:
+- bye            quits the program
+- ``             prints separator for readability
+
+Type in an expression in Caso notation, e.g.
+`(A <-> B)[(A <-> C) -> (B <-> D)] <=> (C -> D)`

@@ -2,6 +2,7 @@ use caso::solve_str;
 
 fn main() {
     println!("=== Caso 0.1 ===");
+    println!("Type `help` for more information.");
     loop {
         use std::io::{self, Write};
 
@@ -18,6 +19,7 @@ fn main() {
 
         match &*input.trim() {
             "bye" => break,
+            "help" => {print_help(); continue}
             "" => {
                 // Print separator for readability.
                 print!("\n------------------------------------<o=o");
@@ -32,3 +34,5 @@ fn main() {
         }
     }
 }
+
+fn print_help() {print!("{}", include_str!("../assets/help/help.txt"))}
